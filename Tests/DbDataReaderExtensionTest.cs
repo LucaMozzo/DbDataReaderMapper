@@ -23,7 +23,7 @@ namespace Tests
             var reader = await cmd.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
-                var employeeObj = reader.MapObject<EmployeeAllFields>();
+                var employeeObj = reader.MapToObject<EmployeeAllFields>();
                 Assert.AreEqual(employeeObj, new EmployeeAllFields
                 {
                     Id = reader.GetInt32(0),
@@ -46,7 +46,7 @@ namespace Tests
             var reader = await cmd.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
-                var employeeObj = reader.MapObject<EmployeeAllFields>();
+                var employeeObj = reader.MapToObject<EmployeeAllFields>();
                 Assert.AreEqual(employeeObj, new EmployeeAllFields
                 {
                     Id = reader.GetInt32(0),
@@ -69,7 +69,7 @@ namespace Tests
             var reader = await cmd.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
-                var employeeObj = reader.MapObject<EmployeeMissingFields>();
+                var employeeObj = reader.MapToObject<EmployeeMissingFields>();
                 Assert.AreEqual(employeeObj, new EmployeeMissingFields
                 {
                     Id = reader.GetInt32(0)
@@ -88,7 +88,7 @@ namespace Tests
             var reader = await cmd.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
-                var employeeObj = reader.MapObject<EmployeeExtraDifferentFields>();
+                var employeeObj = reader.MapToObject<EmployeeExtraDifferentFields>();
                 Assert.AreEqual(employeeObj, new EmployeeExtraDifferentFields
                 {
                     Id = reader.GetInt32(0),
@@ -108,7 +108,7 @@ namespace Tests
             var reader = await cmd.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
-                Assert.ThrowsException<InvalidCastException>(() => reader.MapObject<EmployeeWrongType>());
+                Assert.ThrowsException<InvalidCastException>(() => reader.MapToObject<EmployeeWrongType>());
             }
             connection.Close();
         }
@@ -123,7 +123,7 @@ namespace Tests
             var reader = await cmd.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
-                var employeeObj = reader.MapObject<EmployeeNonNullableFieldsDefault>();
+                var employeeObj = reader.MapToObject<EmployeeNonNullableFieldsDefault>();
                 Assert.AreEqual(employeeObj, new EmployeeNonNullableFieldsDefault
                 {
                     Id = reader.GetInt32(0),
@@ -146,7 +146,7 @@ namespace Tests
             var reader = await cmd.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
-                var employeeObj = reader.MapObject<EmployeeWrongTypeImplicitCast>(allowImplicitCasting: true);
+                var employeeObj = reader.MapToObject<EmployeeWrongTypeImplicitCast>(allowImplicitCasting: true);
                 Assert.AreEqual(employeeObj, new EmployeeWrongTypeImplicitCast
                 {
                     Id = reader.GetInt32(0).ToString(),
@@ -169,7 +169,7 @@ namespace Tests
             var reader = await cmd.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
-                Assert.ThrowsException<InvalidCastException>(() => reader.MapObject<EmployeeWrongTypeImplicitCast>());
+                Assert.ThrowsException<InvalidCastException>(() => reader.MapToObject<EmployeeWrongTypeImplicitCast>());
             }
             connection.Close();
         }
@@ -184,7 +184,7 @@ namespace Tests
             var reader = await cmd.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
-                var employeeObj = reader.MapObject<EmployeeWithAttributes>();
+                var employeeObj = reader.MapToObject<EmployeeWithAttributes>();
                 Assert.AreEqual(employeeObj, new EmployeeWithAttributes
                 {
                     Id = reader.GetInt32(0),
@@ -204,7 +204,7 @@ namespace Tests
             var reader = await cmd.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
-                Assert.ThrowsException<DbColumnMappingException>(() => reader.MapObject<EmployeeWithAttributesSameNameAsProperty>());
+                Assert.ThrowsException<DbColumnMappingException>(() => reader.MapToObject<EmployeeWithAttributesSameNameAsProperty>());
             }
             connection.Close();
         }
@@ -219,7 +219,7 @@ namespace Tests
             var reader = await cmd.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
-                var employeeObj = reader.MapObject<EmployeeWithAttributesPropertyNameSwap>();
+                var employeeObj = reader.MapToObject<EmployeeWithAttributesPropertyNameSwap>();
                 Assert.AreEqual(employeeObj, new EmployeeWithAttributesPropertyNameSwap
                 {
                     FullName = reader.GetString(1),
@@ -239,7 +239,7 @@ namespace Tests
             var reader = await cmd.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
-                var employeeObj = reader.MapObject<EmployeeAllFields>();
+                var employeeObj = reader.MapToObject<EmployeeAllFields>();
                 Assert.IsNull(employeeObj);
             }
             connection.Close();
@@ -257,7 +257,7 @@ namespace Tests
             var reader = await cmd.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
-                var employeeObj = reader.MapObject<EmployeeMissingFields>();
+                var employeeObj = reader.MapToObject<EmployeeMissingFields>();
                 Assert.AreEqual(employeeObj, new EmployeeMissingFields
                 {
                     Id = reader.GetInt32(0)

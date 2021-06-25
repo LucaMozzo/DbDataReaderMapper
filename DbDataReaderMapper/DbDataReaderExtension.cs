@@ -16,7 +16,7 @@ namespace DbDataReaderMapper
         /// <param name="dataReader"></param>
         /// <param name="allowImplicitCasting">If true, </param>
         /// <returns>The object that contains the data in the current row of the reader</returns>
-        public static T MapObject<T>(this DbDataReader dataReader, bool allowImplicitCasting = false) where T : class, new()
+        public static T MapToObject<T>(this DbDataReader dataReader, bool allowImplicitCasting = false) where T : class, new()
         {
             T obj = new T();
             PropertyInfo[] typeProperties = typeof(T).GetProperties();
