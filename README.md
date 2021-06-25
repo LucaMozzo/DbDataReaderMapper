@@ -1,3 +1,4 @@
+[![NuGet](https://img.shields.io/nuget/v/DbDataReaderMapper.svg)](https://www.nuget.org/packages/DbDataReaderMapper/)
 # DbDataReaderMapper
 This is a .NET library that contains an extension of DbDataReader that automatically maps a row to a model.
 
