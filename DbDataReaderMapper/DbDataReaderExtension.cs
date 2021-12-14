@@ -13,10 +13,10 @@ namespace DbDataReaderMapper
         /// Maps the current row to the specified type
         /// </summary>
         /// <typeparam name="T">The type of the output object</typeparam>
-        /// <param name="dataReader"></param>
-        /// <param name="allowImplicitCasting">If true, </param>
+        /// <param name="dataReader">The data source</param>
+        /// <param name="customPropertyConverter">Use a custom converter for certain values</param>
         /// <returns>The object that contains the data in the current row of the reader</returns>
-        public static T MapToObject<T>(this DbDataReader dataReader, bool allowImplicitCasting = false) where T : class, new()
+        public static T MapToObject<T>(this DbDataReader dataReader, CustomPropertyConverter customPropertyConverter = null) where T : class, new()
         {
             T obj = new T();
             PropertyInfo[] typeProperties = typeof(T).GetProperties();
@@ -52,9 +52,9 @@ namespace DbDataReaderMapper
 
                     try
                     {
-                        if (ShouldTryImplicitCasting(allowImplicitCasting, value, resolvedMappedProperty))
+                        if (customPropertyConverter != null && customPropertyConverter[resolvedMappedProperty] != null)
                         {
-                            resolvedMappedProperty.SetValue(obj, Convert.ChangeType(value, resolvedMappedProperty.PropertyType));
+                            resolvedMappedProperty.SetValue(obj, customPropertyConverter[resolvedMappedProperty].DynamicInvoke(value));
                         }
                         else
                         {
@@ -89,16 +89,6 @@ namespace DbDataReaderMapper
         private static bool IsAttributePropertyNamingClash(Dictionary<string, PropertyInfo> customNameMappings,
             string columnName, PropertyInfo mappedProperty, PropertyInfo mappedPropertyCustomName) 
             => mappedProperty != null && mappedPropertyCustomName != null && !customNameMappings.Values.Any(tp => tp.Name.Equals(columnName));
-
-        /// <summary>
-        /// Determines if implicit casting should be attempted on the current value mapping
-        /// </summary>
-        /// <param name="allowImplicitCasting">The allow implicit casting flag</param>
-        /// <param name="value">The values from the database</param>
-        /// <param name="mappedProperty">The resolved mapped property in the model</param>
-        /// <returns>True if implicit casting should be attempted</returns>
-        private static bool ShouldTryImplicitCasting(bool allowImplicitCasting,
-            object value, PropertyInfo mappedProperty) => allowImplicitCasting && !value.GetType().Equals(mappedProperty.PropertyType);
 
         /// <summary>
         /// Gets the custom name attribute from the property

@@ -137,29 +137,6 @@ namespace Tests
         }
 
         [TestMethod]
-        public async Task TestMapperImplicitCastingWhenEnabled()
-        {
-            OleDbCommand cmd = connection.CreateCommand();
-            connection.Open();
-            cmd.CommandText = "SELECT ID AS Id, FullName, Age, Address, DoB FROM Employee WHERE ID=1;";
-            cmd.Connection = connection;
-            var reader = await cmd.ExecuteReaderAsync();
-            while (await reader.ReadAsync())
-            {
-                var employeeObj = reader.MapToObject<EmployeeWrongTypeImplicitCast>(allowImplicitCasting: true);
-                Assert.AreEqual(employeeObj, new EmployeeWrongTypeImplicitCast
-                {
-                    Id = reader.GetInt32(0).ToString(),
-                    FullName = reader.GetString(1),
-                    Age = reader.GetInt32(2).ToString(),
-                    Address = reader.GetString(3),
-                    DoB = reader.GetDateTime(4).ToString()
-                });
-            }
-            connection.Close();
-        }
-
-        [TestMethod]
         public async Task TestMapperImplicitCastingWhenDisabled()
         {
             OleDbCommand cmd = connection.CreateCommand();
@@ -262,6 +239,34 @@ namespace Tests
                 {
                     Id = reader.GetInt32(0)
                 });
+                ++rowCounter;
+            }
+            Assert.AreEqual(2, rowCounter);
+            connection.Close();
+        }
+
+        [TestMethod]
+        public async Task TestMapperCustomConverter()
+        {
+            OleDbCommand cmd = connection.CreateCommand();
+            connection.Open();
+            cmd.CommandText = "SELECT DoB FROM Employee;";
+            cmd.Connection = connection;
+
+            CustomPropertyConverter customPropertyConverter = new CustomPropertyConverter()
+                .AddConversion<EmployeeDateAsString, DateTime?, string>(e => e.DoB, dob => dob?.ToLongDateString());
+
+            int rowCounter = 0;
+            var reader = await cmd.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+            {
+                var dobAsString = reader.MapToObject<EmployeeDateAsString>(customPropertyConverter);
+                var dobAsDate = new EmployeeDateAsDate
+                {
+                    DoB = reader[0] is DBNull ? (DateTime?)null : reader.GetDateTime(0)
+                };
+
+                Assert.AreEqual(dobAsDate.DoB?.ToLongDateString(), dobAsString.DoB);
                 ++rowCounter;
             }
             Assert.AreEqual(2, rowCounter);

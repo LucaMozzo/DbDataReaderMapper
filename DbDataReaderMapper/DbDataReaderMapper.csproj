@@ -2,18 +2,19 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Authors>Luca Mozzo</Authors>
     <Company />
     <PackageProjectUrl>https://github.com/LucaMozzo/DbDataReaderMapper</PackageProjectUrl>
     <RepositoryUrl>https://github.com/LucaMozzo/DbDataReaderMapper</RepositoryUrl>
-    <PackageReleaseNotes>Initial release, support for custom column mappings</PackageReleaseNotes>
+    <PackageReleaseNotes>Added support for custom converters</PackageReleaseNotes>
     <NeutralLanguage>en</NeutralLanguage>
     <Description>This library that contains an extension of DbDataReader that automatically maps a database row to a model.</Description>
     <Copyright></Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>db,database,mapper,data,reader</PackageTags>
     <RepositoryType>git</RepositoryType>
+    <Version>1.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

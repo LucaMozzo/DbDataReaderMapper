@@ -65,12 +65,19 @@ class EmployeeDao
 }
 ```
 
-#### Allow implicit casting
+#### Custom property converter
 
-By default, implicit casting (e.g. mapping an `int` from the database to a `string` in the model) causes an `InvalidCastException`. You can enabled the explicit casting where needed by setting the flag to true when calling the method:
+Assume you have a `VARCHAR` in the database that should be converted to an `Enum` in the code. The automatic conversion will fail, as the only way to create the enum instance from a string in to call `Enum.Parse`. 
+
+You can create your own converter for that property:
+
 ```
-var employeeObj = reader.MapToObject<EmployeeDao>(true);
+CustomPropertyConverter customPropertyConverter = new CustomPropertyConverter()
+                .AddConversion<EmployeeDao, string, EnumInstance>(e => e.Type, employeeType => Enum.Parse<EnumInstance>(employeeType));
 ```
+
+The type parameters are: the DAO class, the type from the database (varchar is automatically converted to string), and the target type (in this case an enum).
+Make sure you handle nulls in the conversion function if the database column allows NULL values.
 
 ## Why do I need this?
 
