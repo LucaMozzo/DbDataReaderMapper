@@ -272,5 +272,27 @@ namespace Tests
             Assert.AreEqual(2, rowCounter);
             connection.Close();
         }
+
+        [TestMethod]
+        public async Task TestMapperSubclassSetsSuperclassFields()
+        {
+            OleDbCommand cmd = connection.CreateCommand();
+            connection.Open();
+            cmd.CommandText = "SELECT ID AS Id, FullName, Age, Address, DoB FROM Employee WHERE ID=1;";
+            cmd.Connection = connection;
+            var reader = await cmd.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+            {
+                var employeeObj = reader.MapToObject<EmployeeSubClass>();
+                Assert.AreEqual(employeeObj, new EmployeeSubClass
+                {
+                    Id = reader.GetInt32(0),
+                    FullName = reader.GetString(1),
+                    Age = reader.GetInt32(2),
+                    Address = reader.GetString(3),
+                    DoB = reader.GetDateTime(4)
+                });
+            }
+        }
     }
 }
