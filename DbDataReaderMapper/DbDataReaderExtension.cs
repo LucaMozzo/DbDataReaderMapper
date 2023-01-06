@@ -16,9 +16,9 @@ namespace DbDataReaderMapper
         /// <param name="dataReader">The data source</param>
         /// <param name="customPropertyConverter">Use a custom converter for certain values</param>
         /// <returns>The object that contains the data in the current row of the reader</returns>
-        public static T MapToObject<T>(this DbDataReader dataReader, CustomPropertyConverter customPropertyConverter = null) where T : class, new()
+        public static T MapToObject<T>(this DbDataReader dataReader, CustomPropertyConverter customPropertyConverter = null) where T : class
         {
-            T obj = new T();
+            T obj = Activator.CreateInstance<T>();
             PropertyInfo[] typeProperties = typeof(T).GetProperties();
             var customNameMappings = typeProperties
                 .Where(tp => GetColumnAttribute(tp) != null)
