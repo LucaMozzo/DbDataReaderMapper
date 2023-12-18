@@ -1,20 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Authors>Luca Mozzo</Authors>
     <Company />
     <PackageProjectUrl>https://github.com/LucaMozzo/DbDataReaderMapper</PackageProjectUrl>
     <RepositoryUrl>https://github.com/LucaMozzo/DbDataReaderMapper</RepositoryUrl>
-    <PackageReleaseNotes>Removed empty constructor requirement</PackageReleaseNotes>
+    <PackageReleaseNotes>Added support for netstandard2.1, addressing some of the vulnerabilities found in netstandard2.0</PackageReleaseNotes>
     <NeutralLanguage>en</NeutralLanguage>
     <Description>This library that contains an extension of DbDataReader that automatically maps a database row to a model.</Description>
     <Copyright></Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>db,database,mapper,data,reader</PackageTags>
     <RepositoryType>git</RepositoryType>
-    <Version>1.1.1</Version>
+    <Version>1.2.0</Version>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
