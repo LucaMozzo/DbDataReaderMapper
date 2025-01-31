@@ -7,14 +7,14 @@
     <Company />
     <PackageProjectUrl>https://github.com/LucaMozzo/DbDataReaderMapper</PackageProjectUrl>
     <RepositoryUrl>https://github.com/LucaMozzo/DbDataReaderMapper</RepositoryUrl>
-    <PackageReleaseNotes>Added support for netstandard2.1, addressing some of the vulnerabilities found in netstandard2.0</PackageReleaseNotes>
+    <PackageReleaseNotes>Added support for custom converter applying on superclass properties conversion</PackageReleaseNotes>
     <NeutralLanguage>en</NeutralLanguage>
     <Description>This library that contains an extension of DbDataReader that automatically maps a database row to a model.</Description>
     <Copyright></Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>db,database,mapper,data,reader</PackageTags>
     <RepositoryType>git</RepositoryType>
-    <Version>1.2.0</Version>
+    <Version>1.3.0</Version>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <PackageReference Include="System.Data.Common" Version="4.3.0" />
+    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
   </ItemGroup>
 
 </Project>

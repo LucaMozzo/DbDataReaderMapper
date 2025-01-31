@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -43,7 +44,13 @@ namespace DbDataReaderMapper
 
         internal Delegate this[PropertyInfo key]
         {
-            get => _conversionFunctions.ContainsKey(key) ? _conversionFunctions[key] : null;
+            get
+            {
+                var resolvedKey = _conversionFunctions.Keys.FirstOrDefault(k => k.Name.Equals(key.Name));
+                return resolvedKey == null
+                    ? null
+                    : _conversionFunctions[resolvedKey];
+            }
         }
     }
 }
