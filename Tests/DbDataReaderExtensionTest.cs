@@ -1,9 +1,6 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Data.OleDb;
-using System.Threading.Tasks;
 using DbDataReaderMapper;
 using Tests.Model;
-using System;
 using DbDataReaderMapper.Exceptions;
 
 namespace Tests
@@ -290,6 +287,32 @@ namespace Tests
                     FullName = reader.GetString(1),
                     Age = reader.GetInt32(2),
                     Address = reader.GetString(3),
+                    DoB = reader.GetDateTime(4)
+                });
+            }
+        }
+
+        [TestMethod]
+        public async Task TestMapperSubclassSetsSuperclassFieldsWithCustomPropertyConverter()
+        {
+            OleDbCommand cmd = connection.CreateCommand();
+            connection.Open();
+            cmd.CommandText = "SELECT ID AS Id, FullName, Age, Address, DoB FROM Employee WHERE ID=1;";
+            cmd.Connection = connection;
+
+            var converter = new CustomPropertyConverter()
+                .AddConversion<EmployeeWrongTypeNeedsConversionSubclass, string, int>(e => e.Address, e => e.Length);
+
+            var reader = await cmd.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+            {
+                var employeeObj = reader.MapToObject<EmployeeWrongTypeNeedsConversionSubclass>(converter);
+                Assert.AreEqual(employeeObj, new EmployeeWrongTypeNeedsConversionSubclass
+                {
+                    Id = reader.GetInt32(0),
+                    FullName = reader.GetString(1),
+                    Age = reader.GetInt32(2),
+                    Address = reader.GetString(3).Length,
                     DoB = reader.GetDateTime(4)
                 });
             }
